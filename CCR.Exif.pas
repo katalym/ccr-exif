@@ -2639,7 +2639,7 @@ begin
   begin
     SetLength(S, 3);
     FillChar(Pointer(S)^, 3, '0');
-    Move(SubSecsTag.Data^, S[1], Max(3, SubSecsTag.ElementCount - 1));
+    Move(SubSecsTag.Data^, S[1], Min(3, SubSecsTag.ElementCount - 1));
     if TryStrToInt(string(S), SubSecs) then
       IncMilliSecond(DateTime, SubSecs);
   end;
