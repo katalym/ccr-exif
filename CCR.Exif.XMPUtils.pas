@@ -54,7 +54,7 @@ type
     xsCameraRaw, xsColorant, xsDimensions, xsDublinCore, xsFont, xsExif,
     xsExifAux, xsIPTC, xsJob, xsMicrosoftPhoto, xsPDF, xsPhotoshop, xsResourceEvent{*},
     xsResourceRef{*}, xsThumbnail, xsTIFF, xsVersion, xsXMPBasic, xsXMPBasicJobTicket,
-    xsXMPDynamicMedia, xsXMPMediaManagement, xsXMPPagedText, xsXMPRights);
+    xsXMPDynamicMedia, xsXMPMediaManagement, xsXMPMediaPro, xsXMPPagedText, xsXMPRights);
   TXMPKnownNamespace = xsRDF..High(TXMPNamespace);
 
   TKnownXMPNamespaces = record //personally I wouldn't have the 'T', but I'll keep with the D2009+ style...
@@ -400,6 +400,7 @@ const
     'http://ns.adobe.com/xap/1.0/bj/',
     'http://ns.adobe.com/xmp/1.0/DynamicMedia/',
     'http://ns.adobe.com/xap/1.0/mm/',
+    'http://ns.iview-multimedia.com/mediapro/1.0/',
     'http://ns.adobe.com/xap/1.0/t/pg/',
     'http://ns.adobe.com/xap/1.0/rights/');
 
@@ -426,6 +427,7 @@ const
     {xsXMPBasicJobTicket} 'xmpBJ',
     {xsXMPDynamicMedia} 'xmpDM',
     {xsXMPMediaManagement} 'xmpMM',
+    {xsXMPMediaPro} 'mediapro',
     {xsXMPPagedText} 'xmpTPg',
     {xsXMPRights} 'xmpRights');
 
@@ -1786,7 +1788,7 @@ procedure TXMPPacket.SaveToStream(Stream: TStream);
 const
   PacketStart: UTF8String =
     '<?xpacket begin="" id="W5M0MpCehiHzreSzNTczkc9d"?>'#10 +
-    '<x:xmpmeta xmlns:x="adobe:ns:meta/" CCRExifVersion="' + CCRExifVersion + '">'#10 +
+    '<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="CCRExifVersion=' + CCRExifVersion + '">'#10 +
     #9'<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'#10;
   PacketEnd: UTF8String =
     #9'</rdf:RDF>'#10 +
