@@ -121,8 +121,8 @@ type
       FDisableChanges: Boolean;
     protected
       function Realloc(var NewCapacity: Longint): Pointer; override;
-      procedure SetSize(const NewSize: Int64); override;
     public
+      procedure SetSize(const NewSize: Int64); override;
       destructor Destroy; override;
       procedure SetSize(NewSize: Longint); override;
       function Write(const Buffer; Count: Longint): Longint; override;
