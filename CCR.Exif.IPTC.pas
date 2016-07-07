@@ -380,7 +380,7 @@ implementation
 
 uses
   DateUtils, Math, {$IFDEF HasTTimeZone}TimeSpan,{$ENDIF}
-  CCR.Exif.Consts, CCR.Exif.StreamHelper;
+  CCR.Exif.StreamHelper;
 
 const
   PriorityChars: array[TIPTCPriority] of AnsiChar = (#0, '8', '7', '6', '5', '4',

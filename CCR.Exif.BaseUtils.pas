@@ -572,7 +572,7 @@ implementation
 uses
   {$IFDEF MSWINDOWS}Windows,{$ENDIF}{$IFDEF POSIX}Posix.Unistd,{$ENDIF}
   {$IFDEF HasIOUtils}IOUtils,{$ENDIF}Math, RTLConsts,
-  CCR.Exif.Consts, CCR.Exif.TagIDs;
+  CCR.Exif.Consts;
 
 type
   TAdobeBlock = class(TMetadataBlock, IStreamPersist, IAdobeResBlock)
