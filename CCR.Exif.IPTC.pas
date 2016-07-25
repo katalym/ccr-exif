@@ -970,7 +970,7 @@ begin
         Break;
       end;
   end;
-  for I := 0 to High(Value) do
+  for I := Low(Value) to High(Value) do
   begin
     Insert(DestIndex, TagID).AsString := Value[I];
     Inc(DestIndex);
@@ -1082,7 +1082,8 @@ end;
 
 procedure TIPTCSection.Move(CurIndex, NewIndex: Integer);
 begin
-  if CurIndex = NewIndex then Exit;
+  if CurIndex = NewIndex then
+    Exit;
   FTags.Move(CurIndex, NewIndex);
   FModified := True;
   FDefinitelySorted := False;
@@ -1116,7 +1117,8 @@ end;
 
 procedure TIPTCSection.Sort;
 begin
-  if FDefinitelySorted then Exit;
+  if FDefinitelySorted then
+    Exit;
   FTags.Sort;
   FModified := True;
   FDefinitelySorted := True;
@@ -1606,7 +1608,8 @@ procedure TIPTCData.NeedLazyLoadedData;
 var
   Item: IMetadataBlock;
 begin
-  if FDataToLazyLoad = nil then Exit;
+  if FDataToLazyLoad = nil then
+    Exit;
   Item := FDataToLazyLoad;
   FDataToLazyLoad := nil; //in case of an exception, nil this beforehand
   Item.Data.Seek(0, soFromBeginning);

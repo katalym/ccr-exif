@@ -1869,22 +1869,27 @@ const
 var
   I: Integer;
   CharsPtr: PAnsiChar;
+  vXmlText: string;
   Document: IDOMDocument;
-  NewStream: TMemoryStream;
+  NewStream: TStringStream;
   PropNode, RootRDFNode, SchemaNode: IDOMNode;
   URI: UnicodeString;
 begin
   Result := False;
   Stream.TryReadHeader(TJPEGSegment.XMPHeader, SizeOf(TJPEGSegment.XMPHeader)); //doesn't matter whether it was there or not
   Document := GetDOM.createDocument('', '', nil);
-  NewStream := TMemoryStream.Create;
+  NewStream := TStringStream.Create('', TEncoding.ANSI);
   try
     NewStream.SetSize(Stream.Size - Stream.Position);
     Stream.ReadBuffer(NewStream.Memory^, NewStream.Size);
     CharsPtr := NewStream.Memory;
-    for I := NewStream.Size - 1 downto 0 do //MSXML chokes on embedded nulls
-      if CharsPtr[I] = #0 then CharsPtr[I] := ' ';
-    if not (Document as IDOMPersist).loadFromStream(NewStream) then
+    for I := NewStream.Size - 1 downto 0 do begin
+      //MSXML chokes on embedded nulls
+      if CharsPtr[I] = #0 then
+        CharsPtr[I] := ' ';
+    end;
+    vXmlText := Trim(NewStream.DataString);
+    if not (Document as IDOMPersist).loadxml(vXmlText) then
       Exit;
     if not FindRootRDFNode(Document, RootRDFNode) then
       Exit;
