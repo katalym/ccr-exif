@@ -1698,9 +1698,13 @@ var
 begin
   if FDataToLazyLoad = nil then Exit;
   Item := FDataToLazyLoad;
-  FDataToLazyLoad := nil; //in case of an exception, nil this beforehand
-  Item.Data.Seek(0, soFromBeginning);
-  LoadFromStream(Item.Data);
+  try
+    // FDataToLazyLoad := nil; //in case of an exception, nil this beforehand
+    Item.Data.Seek(0, soFromBeginning);
+    LoadFromStream(Item.Data);
+  except
+    FDataToLazyLoad := nil;
+  end;
 end;
 
 procedure TXMPPacket.SaveToFile(const FileName: string);
@@ -1880,8 +1884,10 @@ begin
     CharsPtr := NewStream.Memory;
     for I := NewStream.Size - 1 downto 0 do //MSXML chokes on embedded nulls
       if CharsPtr[I] = #0 then CharsPtr[I] := ' ';
-    if not (Document as IDOMPersist).loadFromStream(NewStream) then Exit;
-    if not FindRootRDFNode(Document, RootRDFNode) then Exit;
+    if not (Document as IDOMPersist).loadFromStream(NewStream) then
+      Exit;
+    if not FindRootRDFNode(Document, RootRDFNode) then
+      Exit;
     Clear(True);
     if (NewStream.Size > SizeOf(XPacketStart)) and CompareMem(CharsPtr, @XPacketStart, SizeOf(XPacketStart)) then
       SetString(FRawXMLCache, CharsPtr, NewStream.Size)
