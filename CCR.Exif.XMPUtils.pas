@@ -1888,7 +1888,8 @@ begin
       if CharsPtr[I] = #0 then
         CharsPtr[I] := ' ';
     end;
-    vXmlText := ReplaceText(Trim(NewStream.DataString), '"', '''');
+    vXmlText := Trim(NewStream.DataString);
+    //vXmlText := ReplaceText(Trim(NewStream.DataString), '"', '''');
 
     if not (Document as IDOMPersist).loadxml(vXmlText) then
       Exit;
