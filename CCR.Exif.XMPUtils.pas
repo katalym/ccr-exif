@@ -1867,18 +1867,19 @@ function TXMPPacket.TryLoadFromStream(Stream: TStream): Boolean;
 const
   XPacketStart: array[0..9] of AnsiChar = '<?xpacket ';
 var
-  I: Integer;
+  I, J: Integer;
   CharsPtr: PAnsiChar;
   vXmlText: string;
   Document: IDOMDocument;
   NewStream: TStringStream;
   PropNode, RootRDFNode, SchemaNode: IDOMNode;
   URI: UnicodeString;
+//  vXML: TStringList;
 begin
   Result := False;
   Stream.TryReadHeader(TJPEGSegment.XMPHeader, SizeOf(TJPEGSegment.XMPHeader)); //doesn't matter whether it was there or not
   Document := GetDOM.createDocument('', '', nil);
-  NewStream := TStringStream.Create('', TEncoding.ANSI);
+  NewStream := TStringStream.Create('', TEncoding.UTF8);
   try
     NewStream.SetSize(Stream.Size - Stream.Position);
     Stream.ReadBuffer(NewStream.Memory^, NewStream.Size);
@@ -1888,11 +1889,41 @@ begin
       if CharsPtr[I] = #0 then
         CharsPtr[I] := ' ';
     end;
+
     vXmlText := Trim(NewStream.DataString);
-    //vXmlText := ReplaceText(Trim(NewStream.DataString), '"', '''');
+
+    // need to do some changes to XML to avoid problem with parsing/loading it:
+    // The namespace prefix is not allowed to start with the reserved string "xml". Error processing resource
+    I := pos('<xml:', vXmlText);
+    if I > 0 then
+    begin
+      J := PosEx('</xml:', vXmlText, I) + length('</xml:');
+      Delete(vXmlText, I, J - I);
+//        vXML:= TStringList.Create;
+//        try
+//
+//          vXML.Text := vXmlText;
+//          vXML.SaveToFile('xmltext.txt', TEncoding.UTF8);
+//
+//        finally
+//          vXML.Free;
+//        end;
+    end;
 
     if not (Document as IDOMPersist).loadxml(vXmlText) then
+    begin
+//      vXML:= TStringList.Create;
+//      try
+//
+//        vXML.Text := vXmlText;
+//        vXML.SaveToFile('xmltext.txt', TEncoding.UTF8);
+//
+//      finally
+//        vXML.Free;
+//      end;
+
       Exit;
+    end;
     if not FindRootRDFNode(Document, RootRDFNode) then
       Exit;
     Clear(True);
