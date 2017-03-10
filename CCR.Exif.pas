@@ -1926,9 +1926,16 @@ begin
   FID := ID;
   FSection := Section;
   FElementCount := ElementCount;
-  if FElementCount < 0 then FElementCount := 0;
-  FData := AllocMem(DataSize);
-  FDataStream := TUserMemoryStream.Create(FData, DataSize);
+  if FElementCount < 0 then
+    FElementCount := 0
+  else if FElementCount > 100000 then
+    FElementCount := 0;
+  if DataSize > 0 then
+  begin
+    FData := AllocMem(DataSize);
+    FDataStream := TUserMemoryStream.Create(FData, DataSize);
+  end else
+    FDataStream := nil;
   FOriginalDataSize := DataSize;
   FWellFormed := True;
 end;
