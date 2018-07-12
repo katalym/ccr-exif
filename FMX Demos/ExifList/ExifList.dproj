@@ -89,8 +89,6 @@
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
-        <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_OSX32)'!=''">
         <Debugger_Launcher>/usr/X11/bin/xterm -e &quot;%debuggee%&quot;</Debugger_Launcher>

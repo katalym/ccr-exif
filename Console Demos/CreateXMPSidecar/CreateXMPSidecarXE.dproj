@@ -103,8 +103,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_OSX32)'!=''">
-			<DCC_RemoteDebug>true</DCC_RemoteDebug>
-		</PropertyGroup>
+					</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>

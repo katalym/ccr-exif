@@ -94,8 +94,7 @@
 			<VerInfo_Locale>1033</VerInfo_Locale>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_OSX32)'!=''">
-			<DCC_RemoteDebug>true</DCC_RemoteDebug>
-		</PropertyGroup>
+					</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
 			<DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
 			<DCC_DcuOutput>..\..\DCUs\$(Platform)\$(Config)</DCC_DcuOutput>
