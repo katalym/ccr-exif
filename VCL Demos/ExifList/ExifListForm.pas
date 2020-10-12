@@ -36,27 +36,27 @@ uses
 
 type
   TfrmExifList = class(TForm)
+    actCopy: TAction;
     ActionList: TActionList;
+    actOpen: TOpenPicture;
+    actOpenInDefProg: TFileRun;
+    actSelectAll: TAction;
+    btnCopy: TBitBtn;
+    btnExit: TBitBtn;
+    btnOpen: TBitBtn;
+    btnOpenInDefProg: TBitBtn;
     PageControl: TPageControl;
+    panBtns: TPanel;
     tabOriginal: TTabSheet;
     tabResaved: TTabSheet;
-    panBtns: TPanel;
-    btnOpen: TBitBtn;
-    btnExit: TBitBtn;
-    btnCopy: TBitBtn;
-    actCopy: TAction;
-    actSelectAll: TAction;
-    btnOpenInDefProg: TBitBtn;
-    actOpenInDefProg: TFileRun;
-    actOpen: TOpenPicture;
-    procedure FormCreate(Sender: TObject);
-    procedure btnExitClick(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure actCopyUpdate(Sender: TObject);
-    procedure PageControlChange(Sender: TObject);
     procedure actCopyExecute(Sender: TObject);
-    procedure actSelectAllExecute(Sender: TObject);
+    procedure actCopyUpdate(Sender: TObject);
     procedure actOpenAccept(Sender: TObject);
+    procedure actSelectAllExecute(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure PageControlChange(Sender: TObject);
   private
     FActiveFrame, FOriginalFrame, FResavedFrame: TOutputFrame;
     FMakerNoteValueMap: TMemIniFile;
@@ -73,43 +73,6 @@ implementation
 uses CCR.Exif;
 
 {$R *.dfm}
-
-procedure TfrmExifList.FormCreate(Sender: TObject);
-begin
-  PageControl.Visible := TestMode;
-  FMakerNoteValueMap := TMemIniFile.Create('');
-  ReloadMakerNoteValueMap;
-  FOriginalFrame := TOutputFrame.Create(Self);
-  FOriginalFrame.Align := alClient;
-  FOriginalFrame.Name := '';
-  if not TestMode then
-    FOriginalFrame.Parent := Self
-  else
-  begin
-    actOpen.Enabled := False;
-    actOpen.Visible := False;
-    ActiveControl := PageControl;
-    FOriginalFrame.Parent := tabOriginal;
-    FResavedFrame := TOutputFrame.Create(Self);
-    FResavedFrame.Align := alClient;
-    FResavedFrame.Parent := tabResaved;
-  end;
-  FActiveFrame := FOriginalFrame;
-  SupportOpeningFiles := True;
-end;
-
-procedure TfrmExifList.FormDestroy(Sender: TObject);
-begin
-  FMakerNoteValueMap.Free;
-end;
-
-procedure TfrmExifList.PageControlChange(Sender: TObject);
-begin
-  if PageControl.ActivePage = tabOriginal then
-    FActiveFrame := FOriginalFrame
-  else
-    FActiveFrame := FResavedFrame;
-end;
 
 procedure TfrmExifList.actCopyExecute(Sender: TObject);
 begin
@@ -149,6 +112,43 @@ begin
   FResavedFrame.LoadFromFile(FileName2, FMakerNoteValueMap);
   tabOriginal.Caption := ExtractFileName(FileName1);
   tabResaved.Caption := ExtractFileName(FileName2);
+end;
+
+procedure TfrmExifList.FormCreate(Sender: TObject);
+begin
+  PageControl.Visible := TestMode;
+  FMakerNoteValueMap := TMemIniFile.Create('');
+  ReloadMakerNoteValueMap;
+  FOriginalFrame := TOutputFrame.Create(Self);
+  FOriginalFrame.Align := alClient;
+  FOriginalFrame.Name := '';
+  if not TestMode then
+    FOriginalFrame.Parent := Self
+  else
+  begin
+    actOpen.Enabled := False;
+    actOpen.Visible := False;
+    ActiveControl := PageControl;
+    FOriginalFrame.Parent := tabOriginal;
+    FResavedFrame := TOutputFrame.Create(Self);
+    FResavedFrame.Align := alClient;
+    FResavedFrame.Parent := tabResaved;
+  end;
+  FActiveFrame := FOriginalFrame;
+  SupportOpeningFiles := True;
+end;
+
+procedure TfrmExifList.FormDestroy(Sender: TObject);
+begin
+  FMakerNoteValueMap.Free;
+end;
+
+procedure TfrmExifList.PageControlChange(Sender: TObject);
+begin
+  if PageControl.ActivePage = tabOriginal then
+    FActiveFrame := FOriginalFrame
+  else
+    FActiveFrame := FResavedFrame;
 end;
 
 procedure TfrmExifList.ReloadMakerNoteValueMap;
