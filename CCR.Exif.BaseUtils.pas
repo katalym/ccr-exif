@@ -120,7 +120,7 @@ type
     strict private
       FDisableChanges: Boolean;
     protected
-      function Realloc(var NewCapacity: Longint): Pointer; override;
+      function Realloc(var NewCapacity: {$if CompilerVersion>=35}NativeInt{$else}Longint{$ifend}): Pointer; override;
     public
       procedure SetSize(const NewSize: Int64); override;
       destructor Destroy; override;
@@ -866,7 +866,7 @@ begin
   inherited SetSize(NewSize);
 end;
 
-function TMetadataBlock.TDataStream.Realloc(var NewCapacity: Longint): Pointer;
+function TMetadataBlock.TDataStream.Realloc(var NewCapacity: {$if CompilerVersion>=35}NativeInt{$else}Longint{$ifend}): Pointer;
 begin
   if DisableChanges then
     raise EStreamError.CreateRes(@SStreamIsReadOnly)
